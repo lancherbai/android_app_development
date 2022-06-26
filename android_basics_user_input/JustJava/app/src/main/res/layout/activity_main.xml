@@ -17,7 +17,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:hint="Name"
-            android:inputType="text" />
+            android:inputType="textCapWords" />
 
         <TextView
             android:layout_width="wrap_content"
