@@ -2,7 +2,8 @@ package com.example.justjava;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -60,10 +61,19 @@ public class MainActivity extends AppCompatActivity {
 
         int price = calculatePrice(hasWhippedCream, hasChocolate);
         String priceMessage = createOrderSummary(price, hasWhippedCream, hasChocolate, name);
-        displayMessage(priceMessage);
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("*/*"); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_SUBJECT, "JustJava order for " + name);
+        intent.putExtra(Intent.EXTRA_TEXT, priceMessage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+
     }
 
-    private String createOrderSummary(int price, boolean addWhippedCream, boolean addChocolate,
+    private String createOrderSummary(int price, boolean addWhippedCream,
+                                      boolean addChocolate,
                                       Editable userName) {
         String priceMessage = "Name: " + userName;
         priceMessage += "\nAdd whipped cream? " + addWhippedCream;
@@ -93,9 +103,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void displayMessage(String priceMessage) {
-        TextView priceTextView = findViewById(R.id.price_text_view);
-        priceTextView.setText(priceMessage);
-
-    }
 }
